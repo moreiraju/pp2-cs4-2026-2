@@ -5,6 +5,7 @@ import logger from 'morgan'
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
 import customersRouter from './routes/customers'
+import carRoutes from './routes/cars'
 
 
 const app = express()
@@ -19,4 +20,5 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 
 app.use('/customers', customersRouter)
+app.use('/cars', carRoutes)
 export default app

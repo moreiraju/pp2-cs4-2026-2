@@ -3,6 +3,7 @@ import { Homepage } from './components/Homepage'
 import { CustomersList } from './components/CustomersList'
 import { CarsList } from './components/CarsList'
 import { CustomersForm } from './components/CustomersForm'
+import { CarsForm } from './components/CarsForm'
 
 function App() {
  return (
@@ -30,7 +31,7 @@ function App() {
              </NavLink>
            </li>
 
-                      <li className="nav-item">
+            <li className="nav-item">
              <NavLink to="/cars" className="nav-link">
                Veículos
              </NavLink>
@@ -49,7 +50,7 @@ function App() {
          <Route path="/customers" element={<CustomersList />} />
          <Route path="/cars" element={<CarsList />} />
          <Route path="/customers/:id" element={<CustomersForm />} />
-
+        <Route path="/cars/:id" element={<CarsForm />} />
 
        </Routes>
      </main>

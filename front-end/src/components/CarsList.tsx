@@ -2,10 +2,11 @@
 import { useState, useEffect } from 'react'
 import type { Car } from '../types/Car'
 import { Link } from 'react-router'
+import type { Customer } from '../types/Customer'
 
 export function CarsList() {
   const [cars, setCars] = useState<Car[]>([])
-
+  const [customers, setCustomers] = useState<Customer[]>([])
   async function fetchData() {
     const apiHost = import.meta.env.VITE_API_BASE
 
@@ -18,6 +19,14 @@ export function CarsList() {
 
       const data: Car[] = await response.json()
       setCars(data)
+      const customersResponse = await fetch(`${apiHost}/customers`)
+
+      if (!customersResponse.ok) {
+        throw new Error(`Erro HTTP ${customersResponse.status}`)
+      }
+
+      const customersData: Customer[] = await customersResponse.json()
+      setCustomers(customersData)
     }
     catch (error) {
       if (error instanceof Error) {
@@ -52,6 +61,7 @@ export function CarsList() {
           <thead className="table-dark">
             <tr>
               <th scope="col">Código</th>
+              <th scope="col">Cliente comprador</th>
               <th scope="col">Marca</th>
               <th scope="col">Modelo</th>
               <th scope="col">Cor</th>
@@ -65,6 +75,12 @@ export function CarsList() {
             {cars.map(car => (
               <tr key={car.id}>
                 <td>{car.id}</td>
+                <td>
+                  {car.customer_id === null
+                    ? 'Não vendido'
+                    : customers.find(customer => customer.id === car.customer_id)?.name
+                      ?? 'Cliente não encontrado'}
+                </td>
                 <td>{car.brand}</td>
                 <td>{car.model}</td>
                 <td>{car.color}</td>
@@ -84,7 +100,7 @@ export function CarsList() {
 
             {cars.length === 0 && (
               <tr>
-                <td colSpan={7} className="text-center text-secondary">
+                <td colSpan={8} className="text-center text-secondary">
                   Nenhum veículo cadastrado.
                 </td>
               </tr>
